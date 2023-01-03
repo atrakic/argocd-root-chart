@@ -2,7 +2,7 @@ MAKEFLAGS += --silent
 VALUES ?= values.yaml
 APP := $(notdir $(CURDIR))
 
-template:
+template: lint
 	helm template -f $(VALUES) .
 
 lint:
