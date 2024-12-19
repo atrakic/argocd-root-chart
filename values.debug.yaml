@@ -4,98 +4,102 @@
 
 repoUrl: 'https://github.com/atrakic/argocd-root-chart.git'
 targetRevision: HEAD
+
+region: ''
+account: ''
+clusterName: ''
 destinationServer: ''
 argoNamespace: ''
 argoProject: ''
 
 certManager:
-  enable: false
+  enable: true
   createNamespace: true
   serviceAccountName:
 
 clusterAutoscaler:
-  enable: false
+  enable: true
   serviceAccountName:
 
 externalDns:
-  enable: false
+  enable: true
   createNamespace: true
   serviceAccountName:
   zoneIdFilter:
 
 externalSecrets:
-  enable: false
+  enable: true
 
 ingressNginx:
-  enable: false
+  enable: true
   createNamespace: true
 
 grafana:
-  enable: false
+  enable: true
   serviceAccount:
-    create: false
+    create: true
 
 vault:
-  enable: false
+  enable: true
 
 metricsServer:
-  enable: false
+  enable: true
 
 prometheus:
-  enable: false
+  enable: true
   createNamespace: true
   serviceAccountName:
   roleArn:
   ampWorkspaceUrl:
 
 sparkOperator:
-  enable: false
+  enable: true
   createNamespace: true
 
 argoRollouts:
-  enable: false
+  enable: true
   createNamespace: true
 
 argoWorkflows:
-  enable: false
+  enable: true
 
 kubeStateMetrics:
-  enable: false
+  enable: true
   createNamespace: true
   serviceAccountName:
 
 promtheusNodeExporter:
-  enable: false
+  enable: true
   serviceAccountName:
 
 kubernetesDashboard:
-  enable: false
+  enable: true
   serviceAccountName:
 
 promtail:
-  enable: false
+  enable: true
 
 kubecost:
-  enable: false
+  enable: true
 
 reloader:
-  enable: false
+  enable: true
 
 kubePrometheusStack:
-  enable: false
+  enable: true
 
 kyverno:
-  enable: false
+  enable: true
 
 policies:
-  enable: false
+  enable: true
 
 reporter:
-  enable: false
+  enable: true
 
 velero:
-  enable: false
+  enable: true
 
 opentelemetryCollector:
-  enable: false
+  enable: true
   serviceAccountName:

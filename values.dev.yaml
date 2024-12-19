@@ -1,0 +1,29 @@
+# Default values for argocd-root-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+repoUrl: 'https://github.com/atrakic/argocd-root-chart.git'
+targetRevision: develop
+
+spec:
+  project: default
+  namespace: argocd
+  destination:
+    server: https://kubernetes.default.svc
+
+infra:
+  enabled: true
+  name: infra
+  chart: infra
+  namespace: infra
+  repoURL: https://atrakic.github.io/helm-charts
+  targetRevision: 0.1.1
+
+guestbook:
+  enabled: true
+  name: guestbook
+  chart: guestbook
+  namespace: guestbook
+  path: helm-guestbook
+  repoURL: https://github.com/atrakic/argocd-example-apps
+  targetRevision: develop # HEAD

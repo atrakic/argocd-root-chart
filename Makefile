@@ -1,12 +1,12 @@
 MAKEFLAGS += --silent
-VALUES ?= values.yaml
+VALUES ?= values.debug.yaml
 APP := $(notdir $(CURDIR))
 
-template: lint
+template: #lint
 	helm template -f $(VALUES) .
 
 lint:
-	helm lint .
+	helm lint --quiet .
 
 install: lint ## Install
 	helm upgrade --install $(APP) -f $(VALUES) .

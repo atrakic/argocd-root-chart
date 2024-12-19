@@ -3,6 +3,9 @@
 [![ci](https://github.com/atrakic/argocd-root-chart/workflows/ci/badge.svg)](https://github.com/atrakic/argocd-root-chart/actions)
 [![license](https://img.shields.io/github/license/atrakic/argocd-root-chart.svg)](https://github.com/atrakic/argocd-root-chart/blob/main/LICENSE)
 
+> Helm chart with [app-of-apps-pattern](https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/#app-of-apps-pattern)
+
+
 #### Commands
 
 ```bash
