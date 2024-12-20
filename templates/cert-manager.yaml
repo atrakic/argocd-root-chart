@@ -4,6 +4,8 @@ kind: Application
 metadata:
   name: cert-manager
   namespace: {{ .Values.argoNamespace | default "argocd" }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
@@ -18,12 +20,10 @@ spec:
       parameters:
         - name: installCRDs
           value: 'true'
-        - name: prometheus.servicemonitor.honorLabels
-          value: 'true'
         - name: prometheus.servicemonitor.enabled
           value: 'false'
-        - name: cert-manager.serviceAccount.name
-          value: {{ .Values.certManager.serviceAccountName }}
+        - name: prometheus.servicemonitor.honorLabels
+          value: 'true'
   destination:
     server: {{ .Values.destinationServer | default "https://kubernetes.default.svc" }}
     namespace: cert-manager
