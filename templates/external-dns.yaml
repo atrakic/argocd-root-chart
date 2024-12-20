@@ -9,12 +9,13 @@ metadata:
 spec:
   project: {{ .Values.argoProject | default "default" }}
   source:
-    repoURL: {{ .Values.repoUrl }}
-    path: charts/external-dns
-    targetRevision: {{ .Values.targetRevision }}
+    repoURL: 'https://charts.bitnami.com/bitnami'
+    targetRevision: 6.13.1
     helm:
       values: |
         external-dns:
+            serviceAccount:
+              create: false
         {{- toYaml .Values.externalDns | nindent 10 }}
       parameters:
       - name: external-dns.aws.region

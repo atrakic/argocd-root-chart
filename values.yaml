@@ -5,8 +5,8 @@
 repoUrl: 'https://github.com/atrakic/argocd-root-chart.git'
 targetRevision: HEAD
 destinationServer: ''
-argoNamespace: ''
-argoProject: ''
+argoNamespace: 'argocd'
+argoProject: 'default'
 
 certManager:
   enable: false
@@ -16,12 +16,19 @@ certManager:
 clusterAutoscaler:
   enable: false
   serviceAccountName:
+  resources:
+    limits:
+      cpu: 200m
+      memory: 512Mi
+    requests:
+      cpu: 200m
+      memory: 512Mi
 
 externalDns:
   enable: false
   createNamespace: true
-  serviceAccountName:
   zoneIdFilter:
+  #provider: "aws"
 
 externalSecrets:
   enable: false
@@ -29,6 +36,10 @@ externalSecrets:
 ingressNginx:
   enable: false
   createNamespace: true
+  controller:
+    service:
+      #externalTrafficPolicy: "Local"
+      #annotations:
 
 grafana:
   enable: false
@@ -40,6 +51,10 @@ vault:
 
 metricsServer:
   enable: false
+  replicas: 3
+  podDisruptionBudget:
+    enabled: true
+    maxUnavailable: 1
 
 prometheus:
   enable: false
@@ -58,6 +73,8 @@ argoRollouts:
 
 argoWorkflows:
   enable: false
+  version: 0.20.6
+  repository: https://argoproj.github.io/argo-helm
 
 kubeStateMetrics:
   enable: false

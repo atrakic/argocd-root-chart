@@ -9,9 +9,8 @@ metadata:
 spec:
   project: {{ .Values.argoProject | default "default" }}
   source:
-    repoURL: {{ .Values.repoUrl }}
-    path: charts/promtail
-    targetRevision: {{ .Values.targetRevision }}
+    repoURL: 'https://grafana.github.io/helm-charts'
+    targetRevision: 6.3.0
     helm:
       values: |
         promtail:

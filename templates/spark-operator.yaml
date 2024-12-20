@@ -9,9 +9,8 @@ metadata:
 spec:
   project: {{ .Values.argoProject | default "default" }}
   source:
-    repoURL: {{ .Values.repoUrl }}
-    path: charts/spark-operator
-    targetRevision: {{ .Values.targetRevision }}
+    repoURL: 'https://googlecloudplatform.github.io/spark-on-k8s-operator'
+    targetRevision: 1.1.25
     helm:
       values: |
         spark-operator:

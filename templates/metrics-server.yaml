@@ -9,9 +9,8 @@ metadata:
 spec:
   project: {{ .Values.argoProject | default "default" }}
   source:
-    repoURL: {{ .Values.repoUrl }}
-    path: charts/metrics-server
-    targetRevision: {{ .Values.targetRevision }}
+    repoURL: 'https://kubernetes-sigs.github.io/metrics-server'
+    targetRevision: 3.8.2
     helm:
       values: |
         metrics-server:

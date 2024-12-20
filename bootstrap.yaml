@@ -1,8 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: bootstrap
+  name: argocd-root-chart
   namespace: argocd
+  labels:
+    name: argocd-root-chart
 spec:
   destination:
     namespace: argocd

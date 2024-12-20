@@ -9,12 +9,13 @@ metadata:
 spec:
   project: {{ .Values.argoProject | default "default" }}
   source:
-    repoURL: {{ .Values.repoUrl }}
-    path: charts/kubernetes-dashboard
-    targetRevision: {{ .Values.targetRevision }}
+    repoURL: 'https://kubernetes.github.io/dashboard'
+    targetRevision: 5.7.0
     helm:
       values: |
         kubernetes-dashboard:
+          serviceAccount:
+            create: false
         {{- toYaml .Values.kubernetesDashboard | nindent 10 }}
       parameters:
       - name: kubernetes-dashboard.serviceAccount.name

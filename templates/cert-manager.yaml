@@ -9,9 +9,8 @@ metadata:
 spec:
   project: {{ .Values.argoProject | default "default" }}
   source:
-    repoURL: {{ .Values.repoUrl }}
-    path: charts/cert-manager
-    targetRevision: {{ .Values.targetRevision }}
+    repoURL: 'https://charts.jetstack.io'
+    targetRevision: v1.10.1
     helm:
       values: |
         cert-manager:

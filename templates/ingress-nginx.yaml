@@ -9,9 +9,8 @@ metadata:
 spec:
   project: {{ .Values.argoProject | default "default" }}
   source:
-    repoURL: {{ .Values.repoUrl }}
-    path: charts/ingress-nginx
-    targetRevision: {{ .Values.targetRevision }}
+    repoURL: 'https://kubernetes.github.io/ingress-nginx'
+    targetRevision: 4.1.4
     helm:
       values: |
         ingress-nginx:

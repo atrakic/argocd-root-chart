@@ -9,12 +9,14 @@ metadata:
 spec:
   project: {{ .Values.argoProject | default "default" }}
   source:
-    repoURL: {{ .Values.repoUrl }}
-    path: charts/cluster-autoscaler
-    targetRevision: {{ .Values.targetRevision }}
+    repoURL: https://kubernetes.github.io/autoscaler
+    targetRevision: 9.19.2
     helm:
       values: |
         cluster-autoscaler:
+          rbac:
+            serviceAccount:
+              create: false
         {{- toYaml .Values.clusterAutoscaler | nindent 10 }}
       parameters:
       - name: cluster-autoscaler.awsRegion
