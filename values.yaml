@@ -16,6 +16,8 @@ certManager:
 ingressNginx:
   enable: true
 
+## Disabled ##
+
 clusterAutoscaler:
   enable: false
   serviceAccountName:
@@ -35,9 +37,6 @@ externalDns:
 externalSecrets:
   enable: false
 
-sparkOperator:
-  enable: false
-
 argoRollouts:
   enable: false
 
@@ -46,12 +45,11 @@ argoWorkflows:
 
 kubeStateMetrics:
   enable: false
+  namespace: observability
 
-grafana:
+kubePrometheusStack:
   enable: false
   namespace: observability
-  serviceAccount:
-    create: false
 
 metricsServer:
   enable: false
@@ -77,10 +75,8 @@ promtail:
   enable: false
   namespace: observability
 
-kubePrometheusStack:
-  enable: false
-  namespace: observability
-
 opentelemetryCollector:
   enable: false
   namespace: observability
+
+## __end__
