@@ -6,18 +6,20 @@ metadata:
   labels:
     name: argocd-root-chart
 spec:
-  destination:
-    namespace: argocd
-    server: https://kubernetes.default.svc
   project: default
   source:
     path: .
     repoURL: https://github.com/atrakic/argocd-root-chart
+    # change here when developing
+    #targetRevision: feature/develop
     targetRevision: HEAD
     helm:
       ignoreMissingValueFiles: true
       #valueFiles:
       #  - values-prod.yaml
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
   syncPolicy:
     automated:
       selfHeal: true

@@ -11,6 +11,7 @@ spec:
   source:
     repoURL: 'https://charts.bitnami.com/bitnami'
     targetRevision: 6.13.1
+    chart: external-dns
     helm:
       values: |
         external-dns:
@@ -26,7 +27,7 @@ spec:
         value: {{ .Values.externalDns.zoneIdFilter }}
   destination:
     server: {{ .Values.destinationServer | default "https://kubernetes.default.svc" }}
-    namespace: external-dns
+    namespace: {{ .Values.externalDns.namespace | default "external-dns" }}
   syncPolicy:
     automated: {}
     syncOptions:

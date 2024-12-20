@@ -2,15 +2,21 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-repoUrl: 'https://github.com/atrakic/argocd-root-chart.git'
-targetRevision: HEAD
-destinationServer: ''
+## Globals
+destinationServer: 'https://kubernetes.default.svc'
 argoNamespace: 'argocd'
 argoProject: 'default'
 
+## Operators
+
 certManager:
-  enable: false
+  enable: true
   serviceAccountName:
+
+ingressNginx:
+  enable: true
+
+## Disabled ##
 
 clusterAutoscaler:
   enable: false
@@ -31,20 +37,23 @@ externalDns:
 externalSecrets:
   enable: false
 
-ingressNginx:
+argoRollouts:
   enable: false
-  controller:
-    service:
-      #externalTrafficPolicy: "Local"
-      #annotations:
 
-grafana:
+argoWorkflows:
   enable: false
-  serviceAccount:
-    create: false
+
+kubeStateMetrics:
+  enable: false
+  namespace: observability
+
+kubePrometheusStack:
+  enable: false
+  namespace: observability
 
 metricsServer:
   enable: false
+  namespace: observability
   replicas: 3
   podDisruptionBudget:
     enabled: true
@@ -52,40 +61,22 @@ metricsServer:
 
 prometheus:
   enable: false
-  serviceAccountName:
-  roleArn:
-  ampWorkspaceUrl:
-
-sparkOperator:
-  enable: false
-  createNamespace: true
-
-argoRollouts:
-  enable: false
-  createNamespace: true
-
-argoWorkflows:
-  enable: false
-
-kubeStateMetrics:
-  enable: false
-  createNamespace: true
-  serviceAccountName:
+  namespace: observability
 
 promtheusNodeExporter:
   enable: false
-  serviceAccountName:
+  namespace: observability
 
 kubernetesDashboard:
   enable: false
-  serviceAccountName:
+  namespace: observability
 
 promtail:
   enable: false
-
-kubePrometheusStack:
-  enable: false
+  namespace: observability
 
 opentelemetryCollector:
   enable: false
-  serviceAccountName:
+  namespace: observability
+
+## __end__

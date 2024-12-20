@@ -11,6 +11,7 @@ spec:
   source:
     repoURL: 'https://prometheus-community.github.io/helm-charts'
     targetRevision: 4.13.0
+    chart: prometheus-node-exporter
     helm:
       values: |
         prometheus-node-exporter:
@@ -22,7 +23,7 @@ spec:
         value: {{ .Values.promtheusNodeExporter.serviceAccountName }}
   destination:
     server: {{ .Values.destinationServer | default "https://kubernetes.default.svc" }}
-    namespace: prometheus-node-exporter
+    namespace: {{ .Values.promtheusNodeExporter.namespace | default "prom-node-exporter" }}
   syncPolicy:
     automated:
       prune: true

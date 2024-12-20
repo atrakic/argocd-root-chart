@@ -11,13 +11,14 @@ spec:
   source:
     repoURL: 'https://argoproj.github.io/argo-helm'
     targetRevision: 0.20.6
+    chart: argo-workflows
     helm:
       values: |
         argo-workflows:
         {{- toYaml .Values.argoWorkflows | nindent 10 }}
   destination:
     server: {{ .Values.destinationServer | default "https://kubernetes.default.svc" }}
-    namespace: argo-workflows
+    namespace: {{ .Values.argoWorkflows.namespace | default "argo-workflows" }}
   syncPolicy:
     automated:
       prune: true

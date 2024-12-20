@@ -11,6 +11,7 @@ spec:
   source:
     repoURL: 'https://prometheus-community.github.io/helm-charts'
     targetRevision: 39.12.1
+    chart: kube-prometheus-stack
     helm:
       skipCrds: true
       values: |
@@ -22,7 +23,7 @@ spec:
         {{- toYaml .Values.kubePrometheusStack | nindent 10 }}
   destination:
     server: {{ .Values.destinationServer | default "https://kubernetes.default.svc" }}
-    namespace: kube-prometheus-stack
+    namespace: {{ .Values.kubePrometheusStack.namespace | default "kube-prometheus-stack" }}
   syncPolicy:
     automated:
       prune: true
