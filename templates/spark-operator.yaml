@@ -22,7 +22,7 @@ spec:
     automated:
       prune: true
     syncOptions:
-      - CreateNamespace={{ .Values.sparkOperator.createNamespace }}
+      - CreateNamespace=true
     retry:
       limit: 1
       backoff:

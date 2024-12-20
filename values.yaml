@@ -7,7 +7,6 @@ destinationServer: 'https://kubernetes.default.svc'
 argoNamespace: 'argocd'
 argoProject: 'default'
 
-
 ## Operators
 
 certManager:
@@ -16,10 +15,6 @@ certManager:
 
 ingressNginx:
   enable: true
-  controller:
-    service:
-      #externalTrafficPolicy: "Local"
-      #annotations:
 
 clusterAutoscaler:
   enable: false
@@ -40,13 +35,27 @@ externalDns:
 externalSecrets:
   enable: false
 
+sparkOperator:
+  enable: false
+
+argoRollouts:
+  enable: false
+
+argoWorkflows:
+  enable: false
+
+kubeStateMetrics:
+  enable: false
+
 grafana:
   enable: false
+  namespace: observability
   serviceAccount:
     create: false
 
 metricsServer:
   enable: false
+  namespace: observability
   replicas: 3
   podDisruptionBudget:
     enabled: true
@@ -54,33 +63,24 @@ metricsServer:
 
 prometheus:
   enable: false
-
-sparkOperator:
-  enable: false
-  createNamespace: true
-
-argoRollouts:
-  enable: false
-  createNamespace: true
-
-argoWorkflows:
-  enable: false
-
-kubeStateMetrics:
-  enable: false
-  createNamespace: true
+  namespace: observability
 
 promtheusNodeExporter:
   enable: false
+  namespace: observability
 
 kubernetesDashboard:
   enable: false
+  namespace: observability
 
 promtail:
   enable: false
+  namespace: observability
 
 kubePrometheusStack:
   enable: false
+  namespace: observability
 
 opentelemetryCollector:
   enable: false
+  namespace: observability
