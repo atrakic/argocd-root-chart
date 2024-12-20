@@ -2,15 +2,24 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-repoUrl: 'https://github.com/atrakic/argocd-root-chart.git'
-targetRevision: HEAD
-destinationServer: ''
+## Globals
+destinationServer: 'https://kubernetes.default.svc'
 argoNamespace: 'argocd'
 argoProject: 'default'
 
+
+## Operators
+
 certManager:
-  enable: false
+  enable: true
   serviceAccountName:
+
+ingressNginx:
+  enable: true
+  controller:
+    service:
+      #externalTrafficPolicy: "Local"
+      #annotations:
 
 clusterAutoscaler:
   enable: false
@@ -31,13 +40,6 @@ externalDns:
 externalSecrets:
   enable: false
 
-ingressNginx:
-  enable: false
-  controller:
-    service:
-      #externalTrafficPolicy: "Local"
-      #annotations:
-
 grafana:
   enable: false
   serviceAccount:
@@ -52,9 +54,6 @@ metricsServer:
 
 prometheus:
   enable: false
-  serviceAccountName:
-  roleArn:
-  ampWorkspaceUrl:
 
 sparkOperator:
   enable: false
@@ -70,15 +69,12 @@ argoWorkflows:
 kubeStateMetrics:
   enable: false
   createNamespace: true
-  serviceAccountName:
 
 promtheusNodeExporter:
   enable: false
-  serviceAccountName:
 
 kubernetesDashboard:
   enable: false
-  serviceAccountName:
 
 promtail:
   enable: false
@@ -88,4 +84,3 @@ kubePrometheusStack:
 
 opentelemetryCollector:
   enable: false
-  serviceAccountName:
