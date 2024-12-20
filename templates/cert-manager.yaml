@@ -16,20 +16,19 @@ spec:
         cert-manager:
         {{- toYaml .Values.certManager | nindent 10 }}
       parameters:
-      - name: cert-manager.serviceAccount.name
-        value: {{ .Values.certManager.serviceAccountName }}
+        - name: installCRDs
+          value: 'true'
+        - name: prometheus.servicemonitor.honorLabels
+          value: 'true'
+        - name: prometheus.servicemonitor.enabled
+          value: 'false'
+        - name: cert-manager.serviceAccount.name
+          value: {{ .Values.certManager.serviceAccountName }}
   destination:
     server: {{ .Values.destinationServer | default "https://kubernetes.default.svc" }}
     namespace: cert-manager
   syncPolicy:
-    automated:
-      prune: true
+    automated: {}
     syncOptions:
-      - CreateNamespace={{ .Values.certManager.createNamespace }}
-    retry:
-      limit: 1
-      backoff:
-        duration: 5s
-        factor: 2
-        maxDuration: 1m
+      - CreateNamespace=true
 {{- end -}}

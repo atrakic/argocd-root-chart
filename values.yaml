@@ -10,7 +10,6 @@ argoProject: 'default'
 
 certManager:
   enable: false
-  createNamespace: true
   serviceAccountName:
 
 clusterAutoscaler:
@@ -26,7 +25,6 @@ clusterAutoscaler:
 
 externalDns:
   enable: false
-  createNamespace: true
   zoneIdFilter:
   #provider: "aws"
 
@@ -35,7 +33,6 @@ externalSecrets:
 
 ingressNginx:
   enable: false
-  createNamespace: true
   controller:
     service:
       #externalTrafficPolicy: "Local"
@@ -46,9 +43,6 @@ grafana:
   serviceAccount:
     create: false
 
-vault:
-  enable: false
-
 metricsServer:
   enable: false
   replicas: 3
@@ -58,7 +52,6 @@ metricsServer:
 
 prometheus:
   enable: false
-  createNamespace: true
   serviceAccountName:
   roleArn:
   ampWorkspaceUrl:
@@ -73,8 +66,6 @@ argoRollouts:
 
 argoWorkflows:
   enable: false
-  version: 0.20.6
-  repository: https://argoproj.github.io/argo-helm
 
 kubeStateMetrics:
   enable: false
@@ -92,25 +83,7 @@ kubernetesDashboard:
 promtail:
   enable: false
 
-kubecost:
-  enable: false
-
-reloader:
-  enable: false
-
 kubePrometheusStack:
-  enable: false
-
-kyverno:
-  enable: false
-
-policies:
-  enable: false
-
-reporter:
-  enable: false
-
-velero:
   enable: false
 
 opentelemetryCollector:

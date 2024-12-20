@@ -4,50 +4,54 @@
 
 repoUrl: 'https://github.com/atrakic/argocd-root-chart.git'
 targetRevision: HEAD
-
-region: ''
-account: ''
-clusterName: ''
 destinationServer: ''
-argoNamespace: ''
-argoProject: ''
+argoNamespace: 'argocd'
+argoProject: 'default'
 
 certManager:
   enable: true
-  createNamespace: true
   serviceAccountName:
 
 clusterAutoscaler:
   enable: true
   serviceAccountName:
+  resources:
+    limits:
+      cpu: 200m
+      memory: 512Mi
+    requests:
+      cpu: 200m
+      memory: 512Mi
 
 externalDns:
   enable: true
-  createNamespace: true
-  serviceAccountName:
   zoneIdFilter:
+  #provider: "aws"
 
 externalSecrets:
   enable: true
 
 ingressNginx:
   enable: true
-  createNamespace: true
+  controller:
+    service:
+      #externalTrafficPolicy: "Local"
+      #annotations:
 
 grafana:
   enable: true
   serviceAccount:
     create: true
 
-vault:
-  enable: true
-
 metricsServer:
   enable: true
+  replicas: 3
+  podDisruptionBudget:
+    enabled: true
+    maxUnavailable: 1
 
 prometheus:
   enable: true
-  createNamespace: true
   serviceAccountName:
   roleArn:
   ampWorkspaceUrl:
@@ -79,25 +83,7 @@ kubernetesDashboard:
 promtail:
   enable: true
 
-kubecost:
-  enable: true
-
-reloader:
-  enable: true
-
 kubePrometheusStack:
-  enable: true
-
-kyverno:
-  enable: true
-
-policies:
-  enable: true
-
-reporter:
-  enable: true
-
-velero:
   enable: true
 
 opentelemetryCollector:
