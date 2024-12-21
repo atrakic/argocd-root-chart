@@ -17,6 +17,9 @@ spec:
     helm:
       values: |
         cert-manager:
+            installCRDs: true
+              prometheus:
+                enabled: true
         {{- toYaml .Values.certManager | nindent 10 }}
       parameters:
         - name: installCRDs

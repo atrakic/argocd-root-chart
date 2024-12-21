@@ -16,6 +16,17 @@ certManager:
 ingressNginx:
   enable: true
 
+externalSecrets:
+  enable: true
+
+prometheus:
+  enable: true
+  namespace: observability
+
+promtheusNodeExporter:
+  enable: true
+  namespace: observability
+
 ## Disabled ##
 
 clusterAutoscaler:
@@ -33,9 +44,6 @@ externalDns:
   enable: false
   zoneIdFilter:
   #provider: "aws"
-
-externalSecrets:
-  enable: false
 
 argoRollouts:
   enable: false
@@ -59,13 +67,6 @@ metricsServer:
     enabled: true
     maxUnavailable: 1
 
-prometheus:
-  enable: false
-  namespace: observability
-
-promtheusNodeExporter:
-  enable: false
-  namespace: observability
 
 kubernetesDashboard:
   enable: false
