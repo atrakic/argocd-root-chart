@@ -1,5 +1,5 @@
 MAKEFLAGS += --silent
-VALUES ?= values.debug.yaml
+VALUES ?= values.yaml
 APP := $(notdir $(CURDIR))
 
 template: lint
@@ -7,6 +7,9 @@ template: lint
 
 lint:
 	helm lint --quiet .
+
+install:
+	kubectl apply -f bootstrap.yaml --force
 
 helm-install: lint ## Install
 	helm upgrade --install $(APP) -f $(VALUES) .
@@ -16,6 +19,7 @@ helm-uninstall: # Uninstall helm
 	helm uninstall $(APP)
 
 status:
-	kubectl get Application -n argocd
+	kubectl get applicationsets --namespace argocd
+	kubectl get applications --namespace argocd
 
 -include include.mk

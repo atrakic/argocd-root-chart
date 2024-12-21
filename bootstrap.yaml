@@ -11,8 +11,8 @@ spec:
     path: .
     repoURL: https://github.com/atrakic/argocd-root-chart
     # change here when developing
-    #targetRevision: feature/develop
-    targetRevision: HEAD
+    targetRevision: feature/develop
+    #targetRevision: HEAD
     helm:
       ignoreMissingValueFiles: true
       #valueFiles:
