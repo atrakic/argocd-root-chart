@@ -12,23 +12,18 @@ spec:
     repoURL: 'https://kubernetes.github.io/ingress-nginx'
     targetRevision: 4.1.4
     chart: ingress-nginx
+    # https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml
     helm:
       values: |
         ingress-nginx:
-          controller:
-            updateStrategy:
-              type: "RollingUpdate"
-              rollingUpdate:
-                maxUnavailable: 1
+          defaultBackend:
+            enabled: true
         metrics:
-          port: 10254
           enabled: true
           service:
             annotations:
               prometheus.io/scrape: "true"
               prometheus.io/port: "10254"
-        #admissionWebhooks:
-        #  enabled: false
         {{- toYaml .Values.ingressNginx | nindent 10 }}
   destination:
     server: {{ .Values.destinationServer | default "https://kubernetes.default.svc" }}
