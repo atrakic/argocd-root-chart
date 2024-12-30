@@ -1,5 +1,5 @@
 MAKEFLAGS += --silent
-VALUES ?= values.debug.yaml
+VALUES ?= values.yaml
 APP := $(notdir $(CURDIR))
 
 template: lint
