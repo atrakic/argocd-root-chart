@@ -10,7 +10,7 @@ spec:
   project: {{ .Values.argoProject | default "default" }}
   source:
     repoURL: 'https://kubernetes.github.io/dashboard'
-    targetRevision: 5.7.0
+    targetRevision: {{ .Values.kubernetesDashboard.targetRevision | default "5.7.0" }}
     chart: kubernetes-dashboard
     helm:
       values: |
