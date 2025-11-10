@@ -56,7 +56,9 @@ jobs:
           echo ${{ secrets.GITHUB_TOKEN }} | helm registry login -u ${{ github.actor }} --password-stdin ghcr.io
 
       - name: Push Charts to GHCR
-        run: .github/helm-push.sh ${{ github.repository_owner }}
+        run: |
+          chmod +x .github/helm-push.sh
+          .github/helm-push.sh ${{ github.repository_owner }}
 
   # Build job
   build:
