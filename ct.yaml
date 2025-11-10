@@ -1,7 +1,18 @@
+# Chart Testing Configuration
 # See https://github.com/helm/chart-testing#configuration
+
+# Helm command options
 helm-extra-args: --timeout 800s
 
-# What to check
+# Validation settings
 check-version-increment: false
 validate-maintainers: false
 skip-missing-values: true
+
+# Chart directories
+chart-dirs:
+  - .
+
+# Additional validation
+validate-chart-schema: true
+validate-yaml: true

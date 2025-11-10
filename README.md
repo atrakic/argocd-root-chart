@@ -38,6 +38,19 @@ kubectl apply -f https://github.com/atrakic/argocd-root-chart/blob/main/bootstra
 ### Custom values
 Check `values.yaml` and adjust as required
 
+### Testing
+
+For information about testing the chart locally and in CI, see [Testing Guide](docs/TESTING.md).
+
+Quick test commands:
+```bash
+# Run basic linting
+make lint
+
+# Run comprehensive tests
+make test-all
+```
+
 ### Automated Dependency Updates
 
 This repository uses [Renovate](https://docs.renovatebot.com/) to automatically keep Helm chart dependencies up to date.
