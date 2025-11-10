@@ -1,15 +1,32 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "config:recommended"
   ],
-  "automerge": true,
-  "automergeType": "branch",
-  "major": {
-    "automerge": false
-  },
-  "kubernetes": {
-    "fileMatch": [
-      "\\.yaml$"
-    ]
-  }
+  "regexManagers": [
+    {
+      "fileMatch": ["^values\\.yaml$"],
+      "matchStrings": [
+        "# renovate: datasource=helm depName=(?<depName>[^\\s]+) registryUrl=(?<registryUrl>[^\\s]+)\\n[^:]+:\\n[^:]*targetRevision:\\s*(?<currentValue>[^\\s]+)"
+      ],
+      "datasourceTemplate": "helm"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["helm"],
+      "ignoreUnstable": true,
+      "stabilityDays": 3
+    },
+    {
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    }
+  ]
 }
