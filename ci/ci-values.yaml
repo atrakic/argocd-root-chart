@@ -1,0 +1,63 @@
+# CI-specific values for testing ArgoCD root chart
+# This file contains minimal configuration for CI testing
+
+## Globals
+destinationServer: 'https://kubernetes.default.svc'
+argoNamespace: 'argocd'
+argoProject: 'default'
+
+## Core components for CI testing
+certManager:
+  enable: false  # Disable to reduce complexity in CI
+  targetRevision: v1.15.0  # Use a stable version for CI
+
+ingressNginx:
+  enable: true
+  targetRevision: 4.11.0   # Use a stable version for CI
+  controller:
+    admissionWebhooks:
+      enabled: false  # Disable to avoid complexity in CI
+    service:
+      type: ClusterIP
+    config:
+      use-forwarded-headers: "true"
+
+## Disable all other components for faster CI
+clusterAutoscaler:
+  enable: false
+
+externalDns:
+  enable: false
+
+externalSecrets:
+  enable: false
+
+argoRollouts:
+  enable: false
+
+argoWorkflows:
+  enable: false
+
+kubeStateMetrics:
+  enable: false
+
+kubePrometheusStack:
+  enable: false
+
+metricsServer:
+  enable: false
+
+prometheus:
+  enable: false
+
+prometheusNodeExporter:
+  enable: false
+
+kubernetesDashboard:
+  enable: false
+
+promtail:
+  enable: false
+
+opentelemetryCollector:
+  enable: false
