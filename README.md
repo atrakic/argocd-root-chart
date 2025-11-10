@@ -38,6 +38,20 @@ kubectl apply -f https://github.com/atrakic/argocd-root-chart/blob/main/bootstra
 ### Custom values
 Check `values.yaml` and adjust as required
 
+### Automated Dependency Updates
+
+This repository uses [Renovate](https://docs.renovatebot.com/) to automatically keep Helm chart dependencies up to date.
+
+**Configuration highlights:**
+- Updates are scheduled for Monday mornings before 6am UTC
+- Minor and patch updates are auto-merged automatically
+- Major updates require manual approval
+- All Helm chart updates are grouped together for easier review
+- Monitoring stack charts (Prometheus, Grafana, etc.) are grouped separately
+- Only stable versions are used (pre-releases are ignored)
+- Updates wait 3 days after release for stability validation
+
+The configuration can be found in `renovate.json`.
 
 #### References
 
