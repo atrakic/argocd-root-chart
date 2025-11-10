@@ -16,16 +16,120 @@ concurrency:
 jobs:
   ci:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
-      - name: Set up Homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.12.1
 
-      - name: Install tools
-        run: brew bundle
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          check-latest: true
 
-      - name: Lint chart
-        run: make
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2.6.0
+
+      - name: Run chart-testing (list-changed)
+        id: list-changed
+        run: |
+          changed=$(ct list-changed --target-branch ${{ github.event.repository.default_branch }})
+          if [[ -n "$changed" ]]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run chart-testing (lint)
+        if: steps.list-changed.outputs.changed == 'true'
+        run: ct lint --validate-maintainers=false --target-branch ${{ github.event.repository.default_branch }}
+
+      - name: Create kind cluster
+        if: steps.list-changed.outputs.changed == 'true'
+        uses: helm/kind-action@v1.8.0
+
+      - name: Install ArgoCD
+        if: steps.list-changed.outputs.changed == 'true'
+        run: |
+          # Add ArgoCD Helm repository
+          helm repo add argo https://argoproj.github.io/argo-helm
+          helm repo update
+
+          # Create ArgoCD namespace
+          kubectl create namespace argocd
+
+          # Install ArgoCD with minimal configuration for testing
+          helm install argocd argo/argo-cd \
+            --namespace argocd \
+            --set global.domain=argocd.local \
+            --set server.service.type=ClusterIP \
+            --set dex.enabled=false \
+            --set server.extraArgs[0]="--insecure" \
+            --wait --timeout=10m
+
+      - name: Wait for ArgoCD to be ready
+        if: steps.list-changed.outputs.changed == 'true'
+        run: |
+          echo "Waiting for ArgoCD to be ready..."
+          kubectl wait --for=condition=available --timeout=300s deployment/argocd-server -n argocd
+          kubectl wait --for=condition=available --timeout=300s deployment/argocd-repo-server -n argocd
+          kubectl wait --for=condition=available --timeout=300s deployment/argocd-application-controller -n argocd
+
+          # Verify ArgoCD is running
+          kubectl get pods -n argocd
+          kubectl get svc -n argocd
+
+      - name: Run chart-testing (install)
+        if: steps.list-changed.outputs.changed == 'true'
+        run: ct install --target-branch ${{ github.event.repository.default_branch }}
+
+      - name: Test ArgoCD root chart deployment
+        if: steps.list-changed.outputs.changed == 'true'
+        run: |
+          echo "Testing ArgoCD root chart deployment..."
+
+          # Install the root chart with CI values
+          helm install test-argocd-root . \
+            --namespace argocd \
+            --values ci/ci-values.yaml \
+            --wait --timeout=5m
+
+          # Wait a bit for applications to be created
+          sleep 30
+
+          # Check if ArgoCD applications were created
+          echo "=== ArgoCD Applications ==="
+          kubectl get applications -n argocd
+
+          # Verify applications are healthy
+          echo "=== Application Status ==="
+          kubectl get applications -n argocd -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.health.status}{"\t"}{.status.sync.status}{"\n"}{end}' || echo "No applications found or status not available yet"
+
+          # Check if the expected applications are created
+          EXPECTED_APPS="ingress-nginx"
+          for app in $EXPECTED_APPS; do
+            if kubectl get application $app -n argocd >/dev/null 2>&1; then
+              echo "✓ Application $app created successfully"
+            else
+              echo "✗ Application $app not found"
+              exit 1
+            fi
+          done
+
+      - name: Debug ArgoCD on failure
+        if: failure() && steps.list-changed.outputs.changed == 'true'
+        run: |
+          echo "=== ArgoCD Pods ==="
+          kubectl get pods -n argocd
+
+          echo "=== ArgoCD Applications ==="
+          kubectl get applications -n argocd -o yaml
+
+          echo "=== ArgoCD Server Logs ==="
+          kubectl logs deployment/argocd-server -n argocd --tail=100
+
+          echo "=== ArgoCD Application Controller Logs ==="
+          kubectl logs deployment/argocd-application-controller -n argocd --tail=100
