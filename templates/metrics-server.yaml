@@ -10,7 +10,7 @@ spec:
   project: {{ .Values.argoProject | default "default" }}
   source:
     repoURL: 'https://kubernetes-sigs.github.io/metrics-server'
-    targetRevision: 3.8.2
+    targetRevision: {{ .Values.metricsServer.targetRevision | default "3.8.2" }}
     chart: metrics-server
     helm:
       values: |

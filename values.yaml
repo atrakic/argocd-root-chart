@@ -11,15 +11,18 @@ argoProject: 'default'
 
 certManager:
   enable: true
+  targetRevision: v1.19.1
   serviceAccountName:
 
 ingressNginx:
   enable: true
+  targetRevision: 4.1.4
 
 ## Disabled ##
 
 clusterAutoscaler:
   enable: false
+  targetRevision: 9.19.2
   serviceAccountName:
   resources:
     limits:
@@ -31,17 +34,20 @@ clusterAutoscaler:
 
 externalDns:
   enable: false
+  targetRevision: 6.13.1
   zoneIdFilter:
   #provider: "aws"
 
 externalSecrets:
   enable: false
+  targetRevision: 0.7.2
 
 argoRollouts:
   enable: false
 
 argoWorkflows:
   enable: false
+  targetRevision: 0.20.6
 
 kubeStateMetrics:
   enable: false
@@ -49,10 +55,12 @@ kubeStateMetrics:
 
 kubePrometheusStack:
   enable: false
+  targetRevision: 39.12.1
   namespace: observability
 
 metricsServer:
   enable: false
+  targetRevision: 3.8.2
   namespace: observability
   replicas: 3
   podDisruptionBudget:
@@ -65,14 +73,17 @@ prometheus:
 
 promtheusNodeExporter:
   enable: false
+  targetRevision: 4.13.0
   namespace: observability
 
 kubernetesDashboard:
   enable: false
+  targetRevision: 5.7.0
   namespace: observability
 
 promtail:
   enable: false
+  targetRevision: 6.3.0
   namespace: observability
 
 opentelemetryCollector:

@@ -10,7 +10,7 @@ spec:
   project: {{ .Values.argoProject | default "default" }}
   source:
     repoURL: 'https://charts.bitnami.com/bitnami'
-    targetRevision: 6.13.1
+    targetRevision: {{ .Values.externalDns.targetRevision | default "6.13.1" }}
     chart: external-dns
     helm:
       values: |

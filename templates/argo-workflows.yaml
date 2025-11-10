@@ -10,7 +10,7 @@ spec:
   project: {{ .Values.argoProject | default "default" }}
   source:
     repoURL: 'https://argoproj.github.io/argo-helm'
-    targetRevision: 0.20.6
+    targetRevision: {{ .Values.argoWorkflows.targetRevision | default "0.20.6" }}
     chart: argo-workflows
     helm:
       values: |
