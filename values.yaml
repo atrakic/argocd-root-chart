@@ -9,17 +9,20 @@ argoProject: 'default'
 
 ## Operators
 
+# renovate: datasource=helm depName=cert-manager registryUrl=https://charts.jetstack.io
 certManager:
   enable: true
   targetRevision: v1.19.1
   serviceAccountName:
 
+# renovate: datasource=helm depName=ingress-nginx registryUrl=https://kubernetes.github.io/ingress-nginx
 ingressNginx:
   enable: true
   targetRevision: 4.1.4
 
 ## Disabled ##
 
+# renovate: datasource=helm depName=cluster-autoscaler registryUrl=https://kubernetes.github.io/autoscaler
 clusterAutoscaler:
   enable: false
   targetRevision: 9.19.2
@@ -32,12 +35,14 @@ clusterAutoscaler:
       cpu: 200m
       memory: 512Mi
 
+# renovate: datasource=helm depName=external-dns registryUrl=https://charts.bitnami.com/bitnami
 externalDns:
   enable: false
   targetRevision: 6.13.1
   zoneIdFilter:
   #provider: "aws"
 
+# renovate: datasource=helm depName=external-secrets registryUrl=https://charts.external-secrets.io
 externalSecrets:
   enable: false
   targetRevision: 0.7.2
@@ -45,6 +50,7 @@ externalSecrets:
 argoRollouts:
   enable: false
 
+# renovate: datasource=helm depName=argo-workflows registryUrl=https://argoproj.github.io/argo-helm
 argoWorkflows:
   enable: false
   targetRevision: 0.20.6
@@ -53,11 +59,13 @@ kubeStateMetrics:
   enable: false
   namespace: observability
 
+# renovate: datasource=helm depName=kube-prometheus-stack registryUrl=https://prometheus-community.github.io/helm-charts
 kubePrometheusStack:
   enable: false
   targetRevision: 39.12.1
   namespace: observability
 
+# renovate: datasource=helm depName=metrics-server registryUrl=https://kubernetes-sigs.github.io/metrics-server
 metricsServer:
   enable: false
   targetRevision: 3.8.2
@@ -71,16 +79,19 @@ prometheus:
   enable: false
   namespace: observability
 
+# renovate: datasource=helm depName=prometheus-node-exporter registryUrl=https://prometheus-community.github.io/helm-charts
 promtheusNodeExporter:
   enable: false
   targetRevision: 4.13.0
   namespace: observability
 
+# renovate: datasource=helm depName=kubernetes-dashboard registryUrl=https://kubernetes.github.io/dashboard
 kubernetesDashboard:
   enable: false
   targetRevision: 5.7.0
   namespace: observability
 
+# renovate: datasource=helm depName=promtail registryUrl=https://grafana.github.io/helm-charts
 promtail:
   enable: false
   targetRevision: 6.3.0

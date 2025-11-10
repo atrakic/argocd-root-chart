@@ -1,246 +1,32 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended",
-    ":dependencyDashboard",
-    ":semanticCommits",
-    ":separateMajorReleases"
+    "config:recommended"
   ],
-  "timezone": "UTC",
-  "schedule": [
-    "before 6am on Monday"
-  ],
-  "labels": [
-    "dependencies",
-    "renovate"
-  ],
-  "assignees": [],
-  "reviewers": [],
-  "prConcurrentLimit": 5,
-  "prCreation": "immediate",
-  "automerge": true,
-  "automergeType": "branch",
-  "platformAutomerge": false,
-  "ignoreTests": false,
-  "major": {
-    "automerge": false
-  },
-  "minor": {
-    "automerge": true
-  },
-  "patch": {
-    "automerge": true
-  },
-  "pinDigests": false,
-  "separateMinorPatch": false,
-  "rangeStrategy": "auto",
-  "stabilityDays": 3,
-  "prBodyTemplate": "{{{header}}}{{{table}}}{{{notes}}}{{{changelogs}}}{{{controls}}}{{{footer}}}",
   "regexManagers": [
     {
-      "description": "Update Helm chart versions in ArgoCD Application manifests (values.yaml)",
-      "fileMatch": [
-        "^values\\.yaml$"
-      ],
+      "fileMatch": ["^values\\.yaml$"],
       "matchStrings": [
-        "(?<depName>[a-zA-Z-]+):\\n.*targetRevision:\\s*(?<currentValue>[^\\s]+)"
+        "# renovate: datasource=helm depName=(?<depName>[^\\s]+) registryUrl=(?<registryUrl>[^\\s]+)\\n[^:]+:\\n[^:]*targetRevision:\\s*(?<currentValue>[^\\s]+)"
       ],
       "datasourceTemplate": "helm"
-    },
-    {
-      "description": "Update cert-manager chart version",
-      "fileMatch": [
-        "^values\\.yaml$"
-      ],
-      "matchStrings": [
-        "certManager:\\n.*targetRevision:\\s*(?<currentValue>v?[0-9.]+)"
-      ],
-      "depNameTemplate": "cert-manager",
-      "datasourceTemplate": "helm",
-      "registryUrlTemplate": "https://charts.jetstack.io"
-    },
-    {
-      "description": "Update ingress-nginx chart version",
-      "fileMatch": [
-        "^values\\.yaml$"
-      ],
-      "matchStrings": [
-        "ingressNginx:\\n.*targetRevision:\\s*(?<currentValue>[0-9.]+)"
-      ],
-      "depNameTemplate": "ingress-nginx",
-      "datasourceTemplate": "helm",
-      "registryUrlTemplate": "https://kubernetes.github.io/ingress-nginx"
-    },
-    {
-      "description": "Update cluster-autoscaler chart version",
-      "fileMatch": [
-        "^values\\.yaml$"
-      ],
-      "matchStrings": [
-        "clusterAutoscaler:\\n.*targetRevision:\\s*(?<currentValue>[0-9.]+)"
-      ],
-      "depNameTemplate": "cluster-autoscaler",
-      "datasourceTemplate": "helm",
-      "registryUrlTemplate": "https://kubernetes.github.io/autoscaler"
-    },
-    {
-      "description": "Update external-dns chart version",
-      "fileMatch": [
-        "^values\\.yaml$"
-      ],
-      "matchStrings": [
-        "externalDns:\\n.*targetRevision:\\s*(?<currentValue>[0-9.]+)"
-      ],
-      "depNameTemplate": "external-dns",
-      "datasourceTemplate": "helm",
-      "registryUrlTemplate": "https://charts.bitnami.com/bitnami"
-    },
-    {
-      "description": "Update external-secrets chart version",
-      "fileMatch": [
-        "^values\\.yaml$"
-      ],
-      "matchStrings": [
-        "externalSecrets:\\n.*targetRevision:\\s*(?<currentValue>[0-9.]+)"
-      ],
-      "depNameTemplate": "external-secrets",
-      "datasourceTemplate": "helm",
-      "registryUrlTemplate": "https://charts.external-secrets.io"
-    },
-    {
-      "description": "Update argo-workflows chart version",
-      "fileMatch": [
-        "^values\\.yaml$"
-      ],
-      "matchStrings": [
-        "argoWorkflows:\\n.*targetRevision:\\s*(?<currentValue>[0-9.]+)"
-      ],
-      "depNameTemplate": "argo-workflows",
-      "datasourceTemplate": "helm",
-      "registryUrlTemplate": "https://argoproj.github.io/argo-helm"
-    },
-    {
-      "description": "Update kube-prometheus-stack chart version",
-      "fileMatch": [
-        "^values\\.yaml$"
-      ],
-      "matchStrings": [
-        "kubePrometheusStack:\\n.*targetRevision:\\s*(?<currentValue>[0-9.]+)"
-      ],
-      "depNameTemplate": "kube-prometheus-stack",
-      "datasourceTemplate": "helm",
-      "registryUrlTemplate": "https://prometheus-community.github.io/helm-charts"
-    },
-    {
-      "description": "Update metrics-server chart version",
-      "fileMatch": [
-        "^values\\.yaml$"
-      ],
-      "matchStrings": [
-        "metricsServer:\\n.*targetRevision:\\s*(?<currentValue>[0-9.]+)"
-      ],
-      "depNameTemplate": "metrics-server",
-      "datasourceTemplate": "helm",
-      "registryUrlTemplate": "https://kubernetes-sigs.github.io/metrics-server"
-    },
-    {
-      "description": "Update prometheus-node-exporter chart version",
-      "fileMatch": [
-        "^values\\.yaml$"
-      ],
-      "matchStrings": [
-        "promtheusNodeExporter:\\n.*targetRevision:\\s*(?<currentValue>[0-9.]+)"
-      ],
-      "depNameTemplate": "prometheus-node-exporter",
-      "datasourceTemplate": "helm",
-      "registryUrlTemplate": "https://prometheus-community.github.io/helm-charts"
-    },
-    {
-      "description": "Update kubernetes-dashboard chart version",
-      "fileMatch": [
-        "^values\\.yaml$"
-      ],
-      "matchStrings": [
-        "kubernetesDashboard:\\n.*targetRevision:\\s*(?<currentValue>[0-9.]+)"
-      ],
-      "depNameTemplate": "kubernetes-dashboard",
-      "datasourceTemplate": "helm",
-      "registryUrlTemplate": "https://kubernetes.github.io/dashboard"
-    },
-    {
-      "description": "Update promtail chart version",
-      "fileMatch": [
-        "^values\\.yaml$"
-      ],
-      "matchStrings": [
-        "promtail:\\n.*targetRevision:\\s*(?<currentValue>[0-9.]+)"
-      ],
-      "depNameTemplate": "promtail",
-      "datasourceTemplate": "helm",
-      "registryUrlTemplate": "https://grafana.github.io/helm-charts"
     }
   ],
   "packageRules": [
     {
-      "description": "Group all Helm chart updates together",
-      "matchDatasources": [
-        "helm"
-      ],
-      "groupName": "Helm charts"
+      "matchDatasources": ["helm"],
+      "ignoreUnstable": true,
+      "stabilityDays": 3
     },
     {
-      "description": "Group Prometheus/monitoring related charts",
-      "matchPackageNames": [
-        "kube-prometheus-stack",
-        "prometheus-node-exporter",
-        "promtail"
-      ],
-      "groupName": "Prometheus monitoring stack"
-    },
-    {
-      "description": "Prefer stable versions and avoid pre-releases",
-      "matchDatasources": [
-        "helm"
-      ],
-      "ignoreUnstable": true
-    },
-    {
-      "description": "Auto-merge minor and patch updates for Helm charts",
-      "matchDatasources": [
-        "helm"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
     },
     {
-      "description": "Require manual approval for major Helm chart updates",
-      "matchDatasources": [
-        "helm"
-      ],
-      "matchUpdateTypes": [
-        "major"
-      ],
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["major"],
       "automerge": false
-    },
-    {
-      "description": "GitHub Actions updates",
-      "matchManagers": [
-        "github-actions"
-      ],
-      "groupName": "GitHub Actions",
-      "automerge": true,
-      "pinDigests": true
     }
-  ],
-  "vulnerabilityAlerts": {
-    "enabled": true,
-    "labels": [
-      "security",
-      "vulnerability"
-    ],
-    "automerge": false
-  }
+  ]
 }
