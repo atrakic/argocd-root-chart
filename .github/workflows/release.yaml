@@ -33,7 +33,16 @@ jobs:
         run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-
+      
+      - name: Ensure gh-pages exists
+        run: |
+          git fetch origin
+          if ! git rev-parse --verify origin/gh-pages; then
+            git checkout --orphan gh-pages
+            git commit --allow-empty -m "Initialize gh-pages branch"
+            git push origin gh-pages
+          fi
+          
       - name: Install Helm
         uses: azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4 # v4.3.1
         with:
