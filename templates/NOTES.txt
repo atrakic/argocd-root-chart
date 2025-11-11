@@ -1,3 +1,8 @@
-{{ .Chart.Name }} chart deployed successfully!
+Thank you for installing {{ .Chart.Name }}.
+Your release is named {{ .Release.Name }}.
+
+To learn more about the release, try:
+$ helm status {{ .Release.Name }} -n {{ .Release.Name }}
+$ helm get all {{ .Release.Name }} -n {{ .Release.Name }}
 
 Check status: kubectl get applications -n argocd

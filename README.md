@@ -1,13 +1,11 @@
-# argocd-root-chart
+# argocd-bootstrap
 
-[![ci](https://github.com/atrakic/argocd-root-chart/workflows/ci/badge.svg)](https://github.com/atrakic/argocd-root-chart/actions)
-[![license](https://img.shields.io/github/license/atrakic/argocd-root-chart.svg)](https://github.com/atrakic/argocd-root-chart/blob/main/LICENSE)
+[![ci](https://github.com/atrakic/argocd-bootstrap/workflows/ci/badge.svg)](https://github.com/atrakic/argocd-bootstrap/actions)
+[![license](https://img.shields.io/github/license/atrakic/argocd-bootstrap.svg)](https://github.com/atrakic/argocd-bootstrap/blob/main/LICENSE)
 
 > This is an start up repository for ArgoCD.
 > It contains a Helm chart using the [app-of-apps-pattern](https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/#app-of-apps-pattern).
 > The goal is to setup a production like set of workloads ( ingress, database, monitoring, etc ).
-
-
 
 #### Prerequisites
 
@@ -30,26 +28,13 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 ### Usage
 - Add this repository as a bootstrap cluster
 ```
-kubectl apply -f https://github.com/atrakic/argocd-root-chart/blob/main/bootstrap.yaml
+kubectl apply -f https://raw.githubusercontent.com/atrakic/argocd-bootstrap/refs/heads/main/argocd/bootstrap.yaml
 ```
 </br>
 
 
 ### Custom values
 Check `values.yaml` and adjust as required
-
-### Automated Dependency Updates
-
-This repository uses [Renovate](https://docs.renovatebot.com/) to automatically keep Helm chart dependencies up to date.
-
-**Configuration highlights:**
-- Chart metadata is defined in `values.yaml` using Renovate comments
-- Minor and patch updates are auto-merged automatically
-- Major updates require manual approval
-- Only stable versions are used (pre-releases are ignored)
-- Updates wait 3 days after release for stability validation
-
-The configuration can be found in `renovate.json`.
 
 #### References
 
