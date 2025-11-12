@@ -62,7 +62,7 @@ jobs:
           echo "Waiting for ArgoCD to be ready..."
           kubectl wait --for=condition=available --timeout=300s deployment/argocd-server -n argocd
           kubectl wait --for=condition=available --timeout=300s deployment/argocd-repo-server -n argocd
-          kubectl wait --for=condition=available --timeout=300s deployment/argocd-application-controller -n argocd
+          #kubectl wait --for=condition=available --timeout=300s deployment/argocd-application-controller -n argocd
 
           # Verify ArgoCD is running
           kubectl get pods -n argocd
