@@ -26,3 +26,9 @@ jobs:
         uses: helm/chart-releaser-action@v1.6.0
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+# Example release pipeline trigger:
+#
+# TAG="v0.0.1"
+# git tag "$TAG" -m "Release version: $TAG"
+# git push origin --tags
