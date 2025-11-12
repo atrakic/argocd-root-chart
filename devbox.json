@@ -4,7 +4,8 @@
     "kubectl@latest",
     "kind@latest",
     "kubernetes-helm@latest",
-    "python@latest"
+    "python@latest",
+    "chart-testing@latest"
   ],
   "env": {
     "KUBECONFIG": "$PWD/home/.kube/config"

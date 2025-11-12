@@ -19,5 +19,11 @@
 .project
 .idea/
 *.tmproj
+.tmp/
+.devcontainer/
+.vscode/
+.github/
+.venv/
+.devbox/
 ci/
 README.md.gotmpl
