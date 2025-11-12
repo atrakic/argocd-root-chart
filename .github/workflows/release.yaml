@@ -35,20 +35,24 @@ jobs:
 
       - name: Login to GitHub Container Registry
         run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io -u ${{ github.actor }} --password-stdin
+          echo "${{ secrets.GITHUB_TOKEN }}" | \
+            helm registry login ghcr.io \
+            -u ${{ github.actor }} --password-stdin
 
       - name: Package and Push to GHCR
         run: |
           CHART_VERSION=$(grep '^version:' Chart.yaml | awk '{print $2}')
           CHART_NAME=$(grep '^name:' Chart.yaml | awk '{print $2}')
-          
+
           echo "Packaging chart ${CHART_NAME} version ${CHART_VERSION}"
           helm package .
-          
+
           echo "Pushing ${CHART_NAME}-${CHART_VERSION}.tgz to ghcr.io"
-          helm push ${CHART_NAME}-${CHART_VERSION}.tgz oci://ghcr.io/${{ github.repository_owner }}
-          
-          echo "Chart successfully pushed to ghcr.io/${{ github.repository_owner }}/${CHART_NAME}:${CHART_VERSION}"
+          helm push ${CHART_NAME}-${CHART_VERSION}.tgz \
+            oci://ghcr.io/${{ github.repository_owner }}
+
+          OCI_PATH="ghcr.io/${{ github.repository_owner }}"
+          echo "Chart pushed to ${OCI_PATH}/${CHART_NAME}:${CHART_VERSION}"
 
 # Example release pipeline trigger:
 #
