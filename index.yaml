@@ -1,0 +1,20 @@
+apiVersion: v1
+entries:
+  argocd-bootstrap:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2025-11-12T13:02:51.584956685Z"
+    description: App of Apps for Kubernetes Cluster
+    digest: 4c610563ca17158b4945717ed6adb4f1b1599617485857a8fc954bbd13d4815a
+    icon: https://argo-cd.readthedocs.io/en/stable/assets/logo.png
+    keywords:
+    - argocd
+    - gitops
+    name: argocd-bootstrap
+    sources:
+    - https://github.com/atrakic/argocd-bootstrap
+    type: application
+    urls:
+    - https://atrakic.github.io/argocd-bootstrap/argocd-bootstrap-0.1.2.tgz
+    version: 0.1.2
+generated: "2025-11-12T13:02:51.584203433Z"
