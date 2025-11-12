@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -32,10 +32,13 @@ jobs:
         run: |
           CHART_VERSION=$(grep '^version:' Chart.yaml | awk '{print $2}')
           CHART_NAME=$(grep '^name:' Chart.yaml | awk '{print $2}')
-          
           echo "Packaging chart ${CHART_NAME} version ${CHART_VERSION}"
           helm package .
-          
+          # Verify the package exists
+          if [ ! -f "${CHART_NAME}-${CHART_VERSION}.tgz" ]; then
+            echo "ERROR: Helm package file not found."
+            exit 1
+          fi
           echo "CHART_VERSION=${CHART_VERSION}" >> $GITHUB_ENV
           echo "CHART_NAME=${CHART_NAME}" >> $GITHUB_ENV
 
@@ -47,14 +50,14 @@ jobs:
           name: Release ${{ env.CHART_VERSION }}
           body: |
             Release of ${{ env.CHART_NAME }} version ${{ env.CHART_VERSION }}
-            
+
             ## Installation
-            
+
             ### From GitHub Container Registry (OCI)
             ```bash
             helm install ${{ env.CHART_NAME }} oci://ghcr.io/${{ github.repository_owner }}/${{ env.CHART_NAME }} --version ${{ env.CHART_VERSION }}
             ```
-            
+
             ### From GitHub Pages (Helm Repository)
             ```bash
             helm repo add ${{ github.repository_owner }} https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
@@ -72,7 +75,7 @@ jobs:
           # Store packaged chart in a temp location
           PACKAGE_FILE="${CHART_NAME}-${CHART_VERSION}.tgz"
           cp ${PACKAGE_FILE} /tmp/
-          
+
           # Fetch gh-pages branch or create orphan branch
           if git ls-remote --heads origin gh-pages | grep gh-pages; then
             git fetch origin gh-pages
@@ -82,18 +85,18 @@ jobs:
             git rm -rf . || true
             git clean -fdx
           fi
-          
+
           # Copy the packaged chart
           cp /tmp/${PACKAGE_FILE} .
-          
+
           # Generate or update the index
           helm repo index . --url https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
-          
+
           # Commit and push
           git add ${PACKAGE_FILE} index.yaml
           git commit -m "Release ${CHART_NAME} ${CHART_VERSION}" || echo "No changes to commit"
           git push origin gh-pages
-          
+
           # Clean up and return to original branch
           rm /tmp/${PACKAGE_FILE}
           git checkout ${{ github.ref_name }}
@@ -112,6 +115,13 @@ jobs:
 
           OCI_PATH="ghcr.io/${{ github.repository_owner }}"
           echo "Chart pushed to ${OCI_PATH}/${CHART_NAME}:${CHART_VERSION}"
+
+      - name: Confirm helm repo listings
+        run: |
+          helm repo add "${{ github.repository_owner }}" "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+          helm repo update
+          helm search repo "${{ github.repository_owner  }}"
+          helm show chart "${{ github.repository_owner }}/${{ env.CHART_NAME }}" --version "${{ env.CHART_VERSION }}"
 
 # Example release pipeline trigger:
 #
