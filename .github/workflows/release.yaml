@@ -1,3 +1,4 @@
+# https://helm.sh/docs/howto/chart_releaser_action/#github-actions-workflow
 name: Release Charts
 
 on:
@@ -5,12 +6,12 @@ on:
   push:
     branches:
       - main
-
 jobs:
   release:
+    # depending on default permission settings for your org (contents being read-only or read-write for workloads), you will have to add permissions
+    # see: https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token
     permissions:
       contents: write
-      packages: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -23,105 +24,10 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      - name: Install Helm
-        uses: azure/setup-helm@v4
-        with:
-          version: v3.14.0
-
-      - name: Package Helm Chart
-        run: |
-          CHART_VERSION=$(grep '^version:' Chart.yaml | awk '{print $2}')
-          CHART_NAME=$(grep '^name:' Chart.yaml | awk '{print $2}')
-          echo "Packaging chart ${CHART_NAME} version ${CHART_VERSION}"
-          helm package .
-          # Verify the package exists
-          if [ ! -f "${CHART_NAME}-${CHART_VERSION}.tgz" ]; then
-            echo "ERROR: Helm package file not found."
-            exit 1
-          fi
-          echo "CHART_VERSION=${CHART_VERSION}" >> $GITHUB_ENV
-          echo "CHART_NAME=${CHART_NAME}" >> $GITHUB_ENV
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        if: github.event_name != 'pull_request'
-        with:
-          tag_name: v${{ env.CHART_VERSION }}
-          name: Release ${{ env.CHART_VERSION }}
-          body: |
-            Release of ${{ env.CHART_NAME }} version ${{ env.CHART_VERSION }}
-
-            ## Installation
-
-            ### From GitHub Container Registry (OCI)
-            ```bash
-            helm install ${{ env.CHART_NAME }} oci://ghcr.io/${{ github.repository_owner }}/${{ env.CHART_NAME }} --version ${{ env.CHART_VERSION }}
-            ```
-
-            ### From GitHub Pages (Helm Repository)
-            ```bash
-            helm repo add ${{ github.repository_owner }} https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
-            helm repo update
-            helm install ${{ env.CHART_NAME }} ${{ github.repository_owner }}/${{ env.CHART_NAME }} --version ${{ env.CHART_VERSION }}
-            ```
-          files: ${{ env.CHART_NAME }}-${{ env.CHART_VERSION }}.tgz
-          draft: false
-          prerelease: false
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.7.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Publish to GitHub Pages
-        run: |
-          # Store packaged chart in a temp location
-          PACKAGE_FILE="${CHART_NAME}-${CHART_VERSION}.tgz"
-          cp ${PACKAGE_FILE} /tmp/
-
-          # Fetch gh-pages branch or create orphan branch
-          if git ls-remote --heads origin gh-pages | grep gh-pages; then
-            git fetch origin gh-pages
-            git checkout gh-pages
-          else
-            git checkout --orphan gh-pages
-            git rm -rf . || true
-            git clean -fdx
-          fi
-
-          # Copy the packaged chart
-          cp /tmp/${PACKAGE_FILE} .
-
-          # Generate or update the index
-          helm repo index . --url https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
-
-          # Commit and push
-          git add ${PACKAGE_FILE} index.yaml
-          git commit -m "Release ${CHART_NAME} ${CHART_VERSION}" || echo "No changes to commit"
-          git push origin gh-pages
-
-          # Clean up and return to original branch
-          rm /tmp/${PACKAGE_FILE}
-          git checkout ${{ github.ref_name }}
-
-      - name: Login to GitHub Container Registry
-        run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | \
-            helm registry login ghcr.io \
-            -u ${{ github.actor }} --password-stdin
-
-      - name: Push to GHCR
-        run: |
-          echo "Pushing ${CHART_NAME}-${CHART_VERSION}.tgz to ghcr.io"
-          helm push ${CHART_NAME}-${CHART_VERSION}.tgz \
-            oci://ghcr.io/${{ github.repository_owner }}
-
-          OCI_PATH="ghcr.io/${{ github.repository_owner }}"
-          echo "Chart pushed to ${OCI_PATH}/${CHART_NAME}:${CHART_VERSION}"
-
-      - name: Confirm helm repo listings
-        run: |
-          helm repo add "${{ github.repository_owner }}" "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
-          helm repo update
-          helm search repo "${{ github.repository_owner  }}"
-          helm show chart "${{ github.repository_owner }}/${{ env.CHART_NAME }}" --version "${{ env.CHART_VERSION }}"
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
 # Example release pipeline trigger:
 #
