@@ -1,6 +1,10 @@
 # See https://github.com/helm/chart-testing#configuration
 helm-extra-args: --timeout 800s
 
+# local repo
+chart-dirs: .
+charts: .
+
 # What to check
 check-version-increment: false
 validate-maintainers: false
