@@ -76,7 +76,7 @@ jobs:
           kubectl get svc -n argocd
 
       - name: Run chart-testing (install)
-	if: steps.list-changed.outputs.changed == 'true'
+        if: steps.list-changed.outputs.changed == 'true'
         run: ct install --config ct.yaml --charts . --target-branch ${{ github.event.repository.default_branch }}
 
       - name: Test chart CI deployment
