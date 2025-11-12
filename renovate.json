@@ -5,7 +5,11 @@
   ],
   "regexManagers": [
     {
-      "fileMatch": ["^values\\.yaml$"],
+      "fileMatch": [
+        "^values\\.yaml$",
+        "^charts/.*/values\\.yaml$",
+        "^charts/.*/ci/.*values\\.yaml$"
+      ],
       "matchStrings": [
         "# renovate: datasource=helm depName=(?<depName>[^\\s]+) registryUrl=(?<registryUrl>[^\\s]+)\\n[^:]+:\\n[^:]*targetRevision:\\s*(?<currentValue>[^\\s]+)"
       ],
@@ -14,19 +18,43 @@
   ],
   "packageRules": [
     {
-      "matchDatasources": ["helm"],
+      "matchDatasources": [
+        "helm"
+      ],
       "ignoreUnstable": true,
-      "stabilityDays": 3
+      "stabilityDays": 7
     },
     {
-      "matchDatasources": ["helm"],
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchDatasources": [
+        "helm"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "automerge": true
     },
     {
-      "matchDatasources": ["helm"],
-      "matchUpdateTypes": ["major"],
+      "matchDatasources": [
+        "helm"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
       "automerge": false
+    },
+    {
+      "matchFileNames": [
+        "charts/**/values.yaml",
+        "charts/**/ci/**values.yaml"
+      ],
+      "matchDatasources": [
+        "helm"
+      ],
+      "groupName": "helm-charts",
+      "schedule": [
+        "before 6am on monday"
+      ]
     }
   ]
 }

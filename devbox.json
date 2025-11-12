@@ -12,7 +12,8 @@
   },
   "shell": {
     "init_hook": [
-      "helm repo add my-repo https://atrakic.github.io/argocd-bootstrap"
+      "helm repo add my-repo https://atrakic.github.io/argocd-bootstrap",
+      "helm repo update"
     ],
     "scripts": {
       "kind": [

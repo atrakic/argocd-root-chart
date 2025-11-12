@@ -30,7 +30,7 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 #### Option 1: Install from GitHub Container Registry (GHCR)
 ```bash
 # Install the chart directly from GHCR using OCI format
-helm install argocd-bootstrap oci://ghcr.io/atrakic/argocd-bootstrap --version 0.1.1 -n argocd
+helm install argocd-bootstrap oci://ghcr.io/atrakic/argocd-bootstrap --version 0.1.0 -n argocd
 ```
 
 #### Option 2: Install from GitHub Pages (Helm Repository)
@@ -47,7 +47,7 @@ helm install argocd-bootstrap argocd-bootstrap/argocd-bootstrap -n argocd
 ```bash
 # Clone the repository
 git clone https://github.com/atrakic/argocd-bootstrap.git
-cd argocd-bootstrap
+cd argocd-bootstrap/charts/cluster-bootstrap
 
 # Install the chart
 helm install argocd-bootstrap . -n argocd
@@ -63,7 +63,7 @@ Check `values.yaml` and adjust as required. You can override values during insta
 
 ```bash
 # Using GHCR
-helm install argocd-bootstrap oci://ghcr.io/atrakic/argocd-bootstrap --version 0.1.1 -n argocd -f custom-values.yaml
+helm install argocd-bootstrap oci://ghcr.io/atrakic/argocd-bootstrap --version 0.1.0 -n argocd ## -f custom-values.yaml
 
 # Using Helm repo
 helm install argocd-bootstrap argocd-bootstrap/argocd-bootstrap -n argocd -f custom-values.yaml

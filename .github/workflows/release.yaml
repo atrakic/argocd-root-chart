@@ -6,12 +6,23 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'charts/**'
+      - '.github/workflows/release.yaml'
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
 jobs:
   release:
     # depending on default permission settings for your org (contents being read-only or read-write for workloads), you will have to add permissions
     # see: https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token
     permissions:
       contents: write
+      packages: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -24,10 +35,29 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
+      - name: Build chart dependencies
+        run: |
+          for dir in charts/*/
+          do
+              (cd ${dir}; helm dependency build)
+          done
+
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.7.0
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          CR_SKIP_EXISTING: true
+	  CR_GENERATE_RELEASE_NOTES: true
+
+        # Disabled
+      - name: Notify Slack
+        uses: 8398a7/action-slack@v3
+        if: false #if: always() # Pick up events even if the job fails or is canceled.
+        with:
+          status: ${{ job.status }}
+          fields: repo,author,action,eventName,ref,workflow
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
 # Example release pipeline trigger:
 #
