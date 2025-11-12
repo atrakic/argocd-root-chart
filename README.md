@@ -25,16 +25,49 @@ kubectl port-forward svc/argocd-server 8080:443 -n argocd &
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 --decode && echo
 ```
 
-### Usage
-- Add this repository as a bootstrap cluster
+### Installation
+
+#### Option 1: Install from GitHub Container Registry (GHCR)
+```bash
+# Install the chart directly from GHCR using OCI format
+helm install argocd-bootstrap oci://ghcr.io/atrakic/argocd-bootstrap --version 0.1.1 -n argocd
 ```
+
+#### Option 2: Install from GitHub Pages (Helm Repository)
+```bash
+# Add the Helm repository
+helm repo add argocd-bootstrap https://atrakic.github.io/argocd-bootstrap
+helm repo update
+
+# Install the chart
+helm install argocd-bootstrap argocd-bootstrap/argocd-bootstrap -n argocd
+```
+
+#### Option 3: Install from source
+```bash
+# Clone the repository
+git clone https://github.com/atrakic/argocd-bootstrap.git
+cd argocd-bootstrap
+
+# Install the chart
+helm install argocd-bootstrap . -n argocd
+```
+
+#### Option 4: Add as ArgoCD bootstrap application
+```bash
 kubectl apply -f https://raw.githubusercontent.com/atrakic/argocd-bootstrap/refs/heads/main/argocd/bootstrap.yaml
 ```
-</br>
-
 
 ### Custom values
-Check `values.yaml` and adjust as required
+Check `values.yaml` and adjust as required. You can override values during installation:
+
+```bash
+# Using GHCR
+helm install argocd-bootstrap oci://ghcr.io/atrakic/argocd-bootstrap --version 0.1.1 -n argocd -f custom-values.yaml
+
+# Using Helm repo
+helm install argocd-bootstrap argocd-bootstrap/argocd-bootstrap -n argocd -f custom-values.yaml
+```
 
 #### References
 
