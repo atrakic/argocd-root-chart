@@ -1,13 +1,23 @@
 {
-  "$schema":  "https://raw.githubusercontent.com/jetify-com/devbox/0.16.0/.schema/devbox.schema.json",
-  "packages": ["kubectl@latest"],
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.16.0/.schema/devbox.schema.json",
+  "packages": [
+    "kubectl@latest",
+    "kind@latest",
+    "kubernetes-helm@latest",
+    "python@latest"
+  ],
+  "env": {
+    "KUBECONFIG": "$PWD/home/.kube/config"
+  },
   "shell": {
     "init_hook": [
-      "echo 'Welcome to devbox!' > /dev/null"
+      "helm repo add my-repo https://atrakic.github.io/argocd-bootstrap"
     ],
     "scripts": {
-      "test": [
-        "echo \"Error: no test specified\" && exit 1"
+      "kind": [
+        "finish() { kind delete cluster; }",
+        "trap finish SIGTERM SIGINT EXIT",
+        "kind create cluster"
       ]
     }
   }
