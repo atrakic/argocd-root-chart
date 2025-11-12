@@ -1,6 +1,7 @@
 # argocd-bootstrap
 
 [![ci](https://github.com/atrakic/argocd-bootstrap/workflows/ci/badge.svg)](https://github.com/atrakic/argocd-bootstrap/actions)
+[![release](https://img.shields.io/github/v/release/atrakic/argocd-bootstrap.svg)](https://github.com/atrakic/argocd-bootstrap/releases)
 [![license](https://img.shields.io/github/license/atrakic/argocd-bootstrap.svg)](https://github.com/atrakic/argocd-bootstrap/blob/main/LICENSE)
 
 > This is an start up repository for ArgoCD.
@@ -74,3 +75,5 @@ helm install argocd-bootstrap argocd-bootstrap/argocd-bootstrap -n argocd -f cus
 * Install ArgoCD: [https://argo-cd.readthedocs.io/en/stable/getting_started/#1-install-argo-cd](https://argo-cd.readthedocs.io/en/stable/getting_started/#1-install-argo-cd)
 * Login to ArgoCD: [https://argo-cd.readthedocs.io/en/stable/getting_started/#4-login-using-the-cli](https://argo-cd.readthedocs.io/en/stable/getting_started/#4-login-using-the-cli)
 * ArgoCD Configuration: [https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/)
+
+``` 
